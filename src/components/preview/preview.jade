@@ -1,0 +1,11 @@
+div.col-sm-9.col-md-10.preview(ng-controller="PreviewCtrl as p")
+  table.table.table-bordered.table-striped(st-table="p.fileList")
+    thead
+      tr
+        th(ng-repeat="field in p.fileList track by field.key" ng-if="field.active") {{field.key}}
+    tbody
+      tr(ng-repeat="i in p.fileList[0].data track by $index"
+         ng-if="($index > 0 && $index < 25)"
+         ng-init="dataIndex = $index")
+        td(ng-repeat="field in p.fileList track by $index" ng-if="field.active")
+          {{field.data[dataIndex]}}

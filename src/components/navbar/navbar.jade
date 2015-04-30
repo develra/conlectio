@@ -1,0 +1,7 @@
+nav.navbar.navbar-default(ng-controller="NavbarCtrl as n")
+  div.navbar-brand {{n.orgName}}
+  form.navbar-form
+    input#livefile_name.form-control(type='text', placeholder='file name here', ng-model="n.livingFileName")
+    select#livefile_type.form-control(ng-options="extension for extension in n.extensions" ng-model="n.selectedExtension")
+    {{extension}}
+    button#export_button.btn.btn-primary.pull-right(ng-click="n.download()") Export File

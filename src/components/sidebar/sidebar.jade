@@ -1,0 +1,15 @@
+div.col-sm-3.col-md-2.navbar-default.sidebar(ng-controller="SidebarCtrl as s")
+  div.sidebar-header
+    div.btn-group.btn-group-justified.btn.btn-primary.file-btn(
+    ng-model="s.filesIn"
+    ngf-select
+    ngf-multiple="true"
+    ngf-change="s.handleFiles(s.filesIn)"
+    )
+      | + Add File
+    div.field-wrapper(ng-repeat="field in s.fileList track by field.key")
+      div.field-name(ng-drag="true" ng-drag-success="s.onDragSuccess(field)" data-allow-transform="false") {{field.key}}
+        div.remove-field(ng-click="s.toggle(field)" ng-show="field.active")
+          span.glyphicon.glyphicon-minus
+        div.add-field(ng-click="s.toggle(field)" ng-hide="field.active")
+          span.glyphicon.glyphicon-plus
