@@ -4,10 +4,6 @@ class SidebarCtrl {
   constructor(Upload, Shared_Data) {
     this.filesIn = [];
     this.fileList = Shared_Data;
-    for(var key in sessionStorage){
-      this.fileList.push(JSON.parse(sessionStorage.getItem(key)));
-    }
-    this.fileList = Shared_Data;
   };
 
   handleFiles(files) {
@@ -59,14 +55,11 @@ class SidebarCtrl {
         for(let i = 0; i<result.data.length; i++)
           for(let j = 0; j<fieldsSize; j++)
             fields[j][i] = result.data[i][j];
-        //finally, lets save our fields to sessionstorage
+        //finally, lets save our fields to our shared list
         for(let i = 0; i<fields.length; i++){
           let fieldObj = {"key": fields[i][0], "active": false, "file": fileName, "data": fields[i]};
-          sessionStorage.setItem(fields[i][0], JSON.stringify(fieldObj));
-          //update our fieldList with any new data
-          //this line works because sessionStorage is a set
-          if(sessionStorage.length != this.fileList.length)
-            this.fileList.push(fieldObj);
+          console.log(fieldObj);
+          this.fileList.push(fieldObj);
         }
       }.bind(this)
     });
@@ -90,7 +83,6 @@ class SidebarCtrl {
 
   toggle(field){
     field.active = !field.active;
-    sessionStorage.setItem(field.key,JSON.stringify(field));
   }
 };
 
