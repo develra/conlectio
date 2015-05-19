@@ -8,8 +8,8 @@ var wrench = require('wrench');
 var browserify = require('browserify');
 
 var options = {
-  src: 'src',
-  dist: 'dist',
+  src: 'frontend_src',
+  dist: 'frontend',
   tmp: '.tmp',
   e2e: 'e2e',
   errorHandler: function(title) {

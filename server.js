@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('X-HTTP-Method-Override'));
 
 // set the static files location /public/img will be /img for users
-app.use(express.static(__dirname + '/dist'));
+app.use(express.static(__dirname + '/frontend'));
 
 // routes ==================================================
 require('./backend/routes')(app); // configure our routes
