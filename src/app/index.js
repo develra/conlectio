@@ -4,7 +4,7 @@ import NavbarCtrl from '../components/navbar/navbar.controller';
 import SidebarCtrl from '../components/sidebar/sidebar.controller';
 import PreviewCtrl from '../components/preview/preview.controller';
 
-angular.module('conlect', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ui.bootstrap', 'ngFileUpload', 'ngDraggable', 'smart-table'])
+angular.module('conlect', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ui.bootstrap', 'ngFileUpload', 'lrDragNDrop', 'smart-table'])
   .factory('Shared_Data', function () {
     return []
   })

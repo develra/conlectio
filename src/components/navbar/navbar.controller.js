@@ -32,9 +32,6 @@ class NavbarCtrl {
     a.click();
   }
 
-  test() {
-    console.log(this.selectedExtension);
-  }
 }
 
 NavbarCtrl.$inject = ['Shared_Data'];

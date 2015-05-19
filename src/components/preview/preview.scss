@@ -1,7 +1,13 @@
 .preview
 {
+    padding-left: 3px;
+    padding-right: 3px;
 }
-.droparea
-{
-  display:table-cell;
+
+.lr-drop-target-before{
+  border-left: 2px solid orange !important;
+}
+
+.lr-drop-target-after{
+  border-right: 2px solid orange !important;
 }

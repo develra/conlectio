@@ -7,8 +7,8 @@ div.col-sm-3.col-md-2.navbar-default.sidebar(ng-controller="SidebarCtrl as s")
     ngf-change="s.handleFiles(s.filesIn)"
     )
       | + Add File
-    div.field-wrapper(ng-repeat="field in s.fileList")
-      div.field-name(ng-drag="true" ng-drag-success="s.onDragSuccess(field)" data-allow-transform="false") {{field.key}}
+    div.field-wrapper(ng-repeat="field in s.fileList | orderBy:'key'")
+      div.field-name {{field.key}}
         div.remove-field(ng-click="s.toggle(field)" ng-show="field.active")
           span.glyphicon.glyphicon-minus
         div.add-field(ng-click="s.toggle(field)" ng-hide="field.active")

@@ -1,0 +1,16 @@
+{
+  "env": {
+    "browser": true,
+    "jquery": true
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "strict": 0,
+    "no-unused-vars": 0,
+    "no-undef": 0,
+    "no-console": 0
+  },
+  "plugins": {
+    - angular
+  }
+}

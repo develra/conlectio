@@ -3,6 +3,7 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var _ = require('lodash');
+//Wrench is for recursive file support
 var wrench = require('wrench');
 var browserify = require('browserify');
 

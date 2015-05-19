@@ -1,7 +1,7 @@
 'use strict';
 class SidebarCtrl {
 
-  constructor(Upload, Shared_Data) {
+  constructor(Shared_Data) {
     this.filesIn = [];
     this.fileList = Shared_Data;
   };
@@ -60,6 +60,7 @@ class SidebarCtrl {
           let fieldObj = {"key": fields[i][0], "active": false, "file": fileName, "data": fields[i]};
           console.log(fieldObj);
           this.fileList.push(fieldObj);
+          console.log(this.fileList.length);
         }
       }.bind(this)
     });
@@ -75,16 +76,10 @@ class SidebarCtrl {
     }.bind(this);
   };
 
-
-  onDragSuccess(field){
-    console.log(field.key);
-    this.toggle(field);
-  };
-
   toggle(field){
     field.active = !field.active;
   }
 };
 
-SidebarCtrl.$inject = ['Upload', 'Shared_Data'];
+SidebarCtrl.$inject = ['Shared_Data'];
 export default SidebarCtrl;
