@@ -21,11 +21,22 @@ angular.module('conlect', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'n
       return r;
     };
   })
-  .config(function ($stateProvider, $urlRouterProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $stateProvider
+      .state('admin', {
+        url: '/admin',
+        templateUrl: 'app/main/admin.html'
+      })
       .state('home', {
         url: '/',
         templateUrl: 'app/main/main.html'
       });
   $urlRouterProvider.otherwise('/');
+  //if supported, make the URL pretty
+   if(window.history && window.history.pushState){
+      $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: false
+        });
+   }
 });
