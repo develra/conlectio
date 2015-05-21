@@ -3,6 +3,8 @@
 import NavbarCtrl from '../components/navbar/navbar.controller';
 import SidebarCtrl from '../components/sidebar/sidebar.controller';
 import PreviewCtrl from '../components/preview/preview.controller';
+import AdminSidebarCtrl from '../components/adminsidebar/adminsidebar.controller';
+import AdminNavbarCtrl from '../components/adminnavbar/adminnavbar.controller';
 
 angular.module('conlect', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ui.bootstrap', 'ngFileUpload', 'lrDragNDrop', 'smart-table'])
   .factory('Shared_Data', function () {
@@ -11,6 +13,8 @@ angular.module('conlect', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'n
   .controller('NavbarCtrl', NavbarCtrl)
   .controller('SidebarCtrl', SidebarCtrl)
   .controller('PreviewCtrl', PreviewCtrl)
+  .controller('AdminSidebarCtrl', AdminSidebarCtrl)
+  .controller('AdminNavbarCtrl', AdminNavbarCtrl)
   .filter('unique', function() {
     return function (arr, field) {
       var o = {}, i, l = arr.length, r = [];
