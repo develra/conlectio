@@ -6,11 +6,18 @@
     "type": "git",
     "url": "https://github.com/develra/conlectio"
   },
-  "dependencies":{
-    "express": "~4.5.1",
-    "mongoose": "~3.8.0",
+  "scripts": {
+    "start": "node server.js",
+    "postinstall": "node setup.js"
+  },
+  "dependencies": {
+    "bcrypt": "^0.8.3",
     "body-parser": "~1.4.2",
-    "method-override": "~2.0.2"
+    "express": "~4.5.1",
+    "method-override": "~2.0.2",
+    "mongodb": "*",
+    "mongoose": "~3.8.0",
+    "prompt": "^0.2.14"
   },
   "devDependencies": {
     "babel-eslint": "^1.0.12",
