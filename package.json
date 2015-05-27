@@ -18,6 +18,7 @@
     "method-override": "~2.0.2",
     "mongodb": "*",
     "mongoose": "~3.8.0",
+    "multiparty": "^4.1.2",
     "passport": "^0.2.2",
     "passport-local": "^1.0.0",
     "prompt": "^0.2.14"
