@@ -13,10 +13,13 @@
   "dependencies": {
     "bcrypt": "^0.8.3",
     "body-parser": "~1.4.2",
+    "busboy": "^0.2.9",
     "express": "~4.5.1",
     "method-override": "~2.0.2",
     "mongodb": "*",
     "mongoose": "~3.8.0",
+    "passport": "^0.2.2",
+    "passport-local": "^1.0.0",
     "prompt": "^0.2.14"
   },
   "devDependencies": {

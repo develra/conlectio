@@ -27,11 +27,14 @@ function configRoot(){
 
 function createDbBranch() {
   prompt.get([{
-    name: 'db_name',
+    name: 'db_uri',
     description: 'Name your database',
     message: 'Invalid option - please use only letters, numbers, and underscores (_)',
     type: 'string',
-    required: true
+    required: true,
+    before: function(value) {
+      return 'mongodb://localhost/'+value;
+    }
   },
   {
     name: 'collection_name',
@@ -42,14 +45,14 @@ function createDbBranch() {
   },
   {
     name: 'adminName',
-    description: 'Admin Username - this will be used both to connect to the Database and to access the Admin Panel',
+    description: 'Admin Username - this will be used both to access the Admin Panel',
     message: 'Invalid option - please use only letters, numbers, and underscores (_)',
     type: 'string',
     required: true
   },
   {
     name: 'adminPassword',
-    description: 'Admin Password - this will be used both to connect to the Database and to access the Admin Panel',
+    description: 'Admin Password - this will be used to access the Admin Panel',
     pattern: /[\S]{8}/,
     hidden: true,
     message: 'Invalid option - must be 8 or more characters and not contain whitespace',
@@ -112,23 +115,29 @@ function connectDbBranch() {
     if (err)
       throw err;
     else{
-      console.log(result)
       generateConfig(result);
     }
   });
 }
 
 function generateConfig(data){
-  //give information about type of database
-  if(data.hasOwnProperty('db_uri'))
-    data.db_type = 'external';
-  else
-    data.db_type = 'interal';
-  //write to the config file
-  var stream = fs.createWriteStream("config/config.js");
-  stream.once('open', function(fd) {
-    stream.write(JSON.stringify(data));
-    stream.end();
+  //write to the db config file
+  var dbObj = {}
+  dbObj.uri = data.db_uri
+  dbObj.collection = data.collection_name
+  var dbStream = fs.createWriteStream("config/db.js");
+  dbStream.once('open', function(fd) {
+    dbStream.write(JSON.stringify(dbObj));
+    dbStream.end();
+  });
+  //write to the admin config file
+  var adminObj = {}
+  adminObj.username = data.adminName;
+  adminObj.password = data.adminPassword;
+  var adminStream = fs.createWriteStream("config/adminCreds.js");
+  adminStream.once('open', function(fd) {
+    adminStream.write(JSON.stringify(adminObj));
+    adminStream.end();
   });
 }
 

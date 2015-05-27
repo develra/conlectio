@@ -1,9 +1,10 @@
 'use strict';
 class AdminSidebarCtrl {
 
-  constructor(Shared_Data) {
+  constructor(Shared_Data, Upload) {
     this.filesIn = [];
     this.fileList = Shared_Data;
+    this.Upload = Upload
   };
 
   handleFiles(files) {
@@ -18,14 +19,14 @@ class AdminSidebarCtrl {
         let fileExtension = fileNameArray.pop();
         switch(fileExtension){
           case "csv":
-            this.parseCSV(files[i]);
+            this.sendCSV(files[i]);
             break;
           case "tsv":
             //Papa Parse will autodetect the delimiter
-            this.parseCSV(files[i]);
+            this.sendCSV(files[i]);
             break;
           case "json":
-            this.jsonToCSV(files[i]);
+            this.sendJSON(files[i]);
             break;
           default:
             alert(fileExtension + " is an unsupported file type");
@@ -36,33 +37,17 @@ class AdminSidebarCtrl {
       alert("File API is not supported - please upgrade your browser");
   };
 
-  parseCSV(csvFile, fileName){
+  sendCSV(csvFile, fileName){
     //fileName is optional
     if(typeof fileName === "undefined")
       fileName = csvFile.name;
-    //After days of work, abandon it all and use papa parse instead
-    //The more you know!
-    Papa.parse(csvFile, {
-      skipEmptyLines: true,
-      complete: function(result) {
-        var fields = []
-        var fieldsSize = result.data[0].length;
-        //2d arrays in javascript are strange, we need to initialize the 2nd part
-        for(let i = 0; i<fieldsSize; i++)
-          fields[i] = [];
-        //these two for loops essentially change our csv from being "row" delimited
-        //to "column" delimited
-        for(let i = 0; i<result.data.length; i++)
-          for(let j = 0; j<fieldsSize; j++)
-            fields[j][i] = result.data[i][j];
-        //finally, lets save our fields to our shared list
-        for(let i = 0; i<fields.length; i++){
-          let fieldObj = {"key": fields[i][0], "active": false, "file": fileName, "data": fields[i]};
-          console.log(fieldObj);
-          this.fileList.push(fieldObj);
-          console.log(this.fileList.length);
-        }
-      }.bind(this)
+    this.Upload.upload({
+      url: '/admin/upload/',
+      file: csvFile
+    }).success(function(data, status, headers, config) {
+       console.log('file ' + config.file.name + 'is uploaded successfully. Response: ' + data);
+    }).error(function(status){
+      console.log('request failed with status' + status);
     });
   };
 
@@ -81,5 +66,5 @@ class AdminSidebarCtrl {
   }
 };
 
-AdminSidebarCtrl.$inject = ['Shared_Data'];
+AdminSidebarCtrl.$inject = ['Shared_Data', 'Upload'];
 export default AdminSidebarCtrl;
