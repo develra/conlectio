@@ -4,7 +4,6 @@ div.col-sm-9.col-md-10.preview(ng-controller="PreviewCtrl as p")
       tr
         th(lr-drag-src="headers" lr-drop-target="headers" ng-if="field.active" ng-repeat="field in p.fileList") {{field.key}}
     tbody
-      tr(ng-repeat="i in p.fileList[0].data track by $index"
-         ng-if="($index > 0 && $index < 25)"
+      tr(ng-repeat="i in p.fileList[0].demo track by $index"
          ng-init="dataIndex = $index")
-        td(ng-repeat="field in p.fileList track by $index" ng-if="field.active") {{field.data[dataIndex]}}
+        td(ng-repeat="field in p.fileList track by $index" ng-if="field.active") {{field.demo[dataIndex]}}

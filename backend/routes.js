@@ -11,13 +11,27 @@ var Papa = require('babyparse');
         // authentication routes
 
         // sample api route
-        app.get('/api/nerds', function(req, res) {
-            // use mongoose to get all nerds in the database
-            Nerd.find(function(err, nerds) {
+        app.get('/api/viewdata', function(req, res) {
+            // use mongoose to get all our filefields
+            // we are going to build up our query to avoid pulling in unneeded data
+            var query = FileField.find({})
+            //select only the needed fields
+            query.select('file key demo');
+            query.exec(function (err, data){
                 if (err)
                     res.send(err);
-                res.json(nerds); // return all nerds in JSON format
+                res.send(data);
             });
+        });
+
+        app.get('/api/realdata', function(req, res) {
+          var query = FileField.find({})
+          query.select('data');
+          query.exec(function (err, data){
+            if (err)
+              res.send(err)
+            res.send(data);
+          });
         });
 
         // route to handle creating goes here (app.post)
@@ -34,14 +48,12 @@ var Papa = require('babyparse');
           form.on('file', function(name,file){
             fs.readFile(file.path, 'utf8', function(err, data){
               if (err) throw err;
-              parseCSV(data, file.originalFilename, function(result){
-                      console.log(result)
-              });
+              parseCSV(data, file.originalFilename);
             });
           });
 
-          form.on('close', function() {
-            res.send('Received files');
+          form.on('close', function(file) {
+            res.send('Recieved and Parsed file');
           });
           form.parse(req);
         });
@@ -88,19 +100,23 @@ function parseCSV(csvFile, fileName){
         delete tempFileField._id;
         //Use update with upsert instead of save to prevent duplicates
         FileField.update(
+          //query param (acts as an _id here)
           { file: fileName,
             key: fields[i][0]
           },
+          //object to save sans _id
           tempFileField,
+          //save or update
           {upsert: true},
+          //callback
           function(err, numberAffected, raw) {
           if (err)
               throw err
           else{
             if (raw.updatedExisting == true)
-              console.log(numberAffected + ' FileFields Updated');
+              console.log(numberAffected + ' FileField Updated');
             else
-              console.log(numberAffected + ' FileFields Created');
+              console.log(numberAffected + ' FileField Created');
           }
         });
       }

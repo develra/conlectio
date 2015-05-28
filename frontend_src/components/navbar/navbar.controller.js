@@ -1,28 +1,45 @@
 'use strict';
 
 class NavbarCtrl {
-  constructor(Shared_Data) {
+  constructor(Shared_Data, $http) {
     this.orgName = 'Conlect';
     this.livingFileName = 'conlect';
     this.extensions = ['.csv', '.json'];
     this.selectedExtension = '.csv';
     this.fileList = Shared_Data;
+    this.http = $http;
   }
 
-  download() {
-    //build the csv
+  exportChain(){
+    this.getData();
+  }
+
+  getData(){
+    //http.get doesn't like .bind(this) - workaround
+    var that = this;
+    this.http.get('/api/realdata')
+     .success(function(data){
+       that.buildCsvDocument(data);
+     })
+     .error(function(data,status){
+       console.log(data + ' failed with status ' + status);
+     });
+  }
+
+  buildCsvDocument(fullFields){
     var csvRows = []
-    //Loop through active fields
-    for(let j = 0; j<this.fileList[0].data.length; j++){
+    for(let j = 0; j<fullFields[0].data.length; j++){
       csvRows[j] = ""
-      for(let i = 0; i<this.fileList.length; i++){
-        if(this.fileList[i].active == true){
-          csvRows[j]+= this.fileList[i].data[j]+',';
+      for(let i = 0; i<fullFields.length; i++){
+          csvRows[j]+= fullFields[i].data[j]+',';
         }
-      }
       //cleaning up a trailing comma
       csvRows[j] = csvRows[j].substring(0, csvRows[j].length-1);
+      }
+    this.download(csvRows);
     }
+
+  download(csvRows) {
     var csvString = csvRows.join("\r\n");
     var a = document.createElement('a');
     a.href = 'data:attachment/csv;charset=utf-8,' + encodeURIComponent(csvString);
@@ -34,6 +51,5 @@ class NavbarCtrl {
 
 }
 
-NavbarCtrl.$inject = ['Shared_Data'];
-
+NavbarCtrl.$inject = ['Shared_Data', '$http'];
 export default NavbarCtrl;

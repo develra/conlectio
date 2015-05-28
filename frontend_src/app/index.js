@@ -7,8 +7,20 @@ import AdminSidebarCtrl from '../components/adminsidebar/adminsidebar.controller
 import AdminNavbarCtrl from '../components/adminnavbar/adminnavbar.controller';
 
 angular.module('conlect', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ui.bootstrap', 'ngFileUpload', 'lrDragNDrop', 'smart-table'])
-  .factory('Shared_Data', function () {
-    return []
+  .factory('Shared_Data', function ($http) {
+    var sharedObj = [];
+    $http.get('/api/viewdata')
+      .success(function(data) {
+        for(let i = 0; i<data.length; i++){
+          data[i].active = false;
+          data[i].userMaps = [];
+          sharedObj.push(data[i]);
+        }
+      })
+      .error(function(data, status) {
+        console.log(data + ' failed with code ' + status);
+      });
+      return sharedObj;
   })
   .controller('NavbarCtrl', NavbarCtrl)
   .controller('SidebarCtrl', SidebarCtrl)
