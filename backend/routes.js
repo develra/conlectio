@@ -34,7 +34,9 @@ var Papa = require('babyparse');
           form.on('file', function(name,file){
             fs.readFile(file.path, 'utf8', function(err, data){
               if (err) throw err;
-              parseCSV(data, file.originalFilename);
+              parseCSV(data, file.originalFilename, function(result){
+                      console.log(result)
+              });
             });
           });
 
@@ -81,15 +83,25 @@ function parseCSV(csvFile, fileName){
           demo: fields[i].slice(0,25),
           data: fields[i]
         });
-        newFileField.save(function(err, newFileField) {
-          if (err){
-            if (err.code == 11000 | err.code == 11001)
-              console.log('FileField '+newFileField.key+' already in DB, create request ignored');
-            else
+        //delete the _id field to make mongodb happy
+        var tempFileField = newFileField.toObject()
+        delete tempFileField._id;
+        //Use update with upsert instead of save to prevent duplicates
+        FileField.update(
+          { file: fileName,
+            key: fields[i][0]
+          },
+          tempFileField,
+          {upsert: true},
+          function(err, numberAffected, raw) {
+          if (err)
               throw err
+          else{
+            if (raw.updatedExisting == true)
+              console.log(numberAffected + ' FileFields Updated');
+            else
+              console.log(numberAffected + ' FileFields Created');
           }
-          else
-            console.log('FileField '+newFileField.key+ ' Saved!');
         });
       }
   }
