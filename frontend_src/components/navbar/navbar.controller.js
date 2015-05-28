@@ -15,9 +15,14 @@ class NavbarCtrl {
   }
 
   getData(){
-    //http.get doesn't like .bind(this) - workaround
+    //we only want to get the active fields
+    var activeFields = [];
+    for (let i = 0; i<this.fileList.length; i++)
+      if(this.fileList[i].active === true)
+        activeFields.push(this.fileList[i].key);
+    //http.get doesn't like .bind(this) due to its promisetory nature - workaround
     var that = this;
-    this.http.get('/api/realdata')
+    this.http.get('/api/realdata', {params: activeFields})
      .success(function(data){
        that.buildCsvDocument(data);
      })
@@ -27,6 +32,10 @@ class NavbarCtrl {
   }
 
   buildCsvDocument(fullFields){
+    if (fullFields.length == 0){
+      console.log("No fields selected");
+      return;
+    }
     var csvRows = []
     for(let j = 0; j<fullFields[0].data.length; j++){
       csvRows[j] = ""

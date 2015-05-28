@@ -25,7 +25,16 @@ var Papa = require('babyparse');
         });
 
         app.get('/api/realdata', function(req, res) {
-          var query = FileField.find({})
+          //build up $in selector
+          var keyList = []
+          for (key in req.query) {
+            //avoid prototype chain grossness
+            if (!req.query.hasOwnProperty(key))
+              continue;
+            keyList.push(req.query[key]);
+          }
+          //build up our query
+          var query = FileField.find({'key': {'$in': keyList}});
           query.select('data');
           query.exec(function (err, data){
             if (err)
