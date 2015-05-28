@@ -1,7 +1,11 @@
-// grab the nerd model we just created
+// Modules & Models
 var Nerd = require('./models/nerd');
+var FileField = require('./models/filefield');
+var multiparty = require('multiparty');
+var fs = require('fs');
+var Papa = require('babyparse');
+
     module.exports = function(app) {
-    var multiparty = require('multiparty');
         // server routes ===========================================================
         // handle things like api calls
         // authentication routes
@@ -22,21 +26,19 @@ var Nerd = require('./models/nerd');
           form.on('error', function(err) {
             console.log('Error parsing form: ' + err.stack);
           });
-
-          form.on('part', function(part){
-            console.log(part.filename);
-            console.log(part.byteCount);
-            console.log(part['content-type']);
-            part.resume();
-          });
-
+          //Track progress for the log
           form.on('progress', function(bytesReceived, bytesExpected){
-            console.log(bytesReceived);
-            console.log(bytesExpected);
+            console.log(bytesReceived+"/"+bytesExpected+" bytes received");
+          });
+          //Handles the uploaded file
+          form.on('file', function(name,file){
+            fs.readFile(file.path, 'utf8', function(err, data){
+              if (err) throw err;
+              parseCSV(data, file.originalFilename);
+            });
           });
 
           form.on('close', function() {
-            console.log('Upload completed');
             res.send('Received files');
           });
           form.parse(req);
@@ -49,3 +51,45 @@ var Nerd = require('./models/nerd');
             res.sendfile('./frontend/index.html');
         });
     };
+
+//Helper Functions
+function parseCSV(csvFile, fileName){
+    //fileName is optional
+    if(typeof fileName === "undefined")
+      fileName = csvFile.name;
+    //After days of work, abandon it all and use papa parse instead
+    //The more you know!
+    var parsedCsv = Papa.parse(csvFile,{
+      config: {
+        skipEmptyLines: true
+      }
+    });
+    var fields = []
+    var fieldsSize = parsedCsv.data[0].length;
+    for(var i = 0; i<fieldsSize; i++)
+      fields[i] = [];
+    //these two for loops essentially change our csv from being "row" delimited
+    //to "column" delimited
+    for(var i = 0; i<parsedCsv.data.length; i++)
+      for(var j = 0; j<fieldsSize; j++)
+        fields[j][i] = parsedCsv.data[i][j];
+      //finally, lets push our fields to mongodb
+      for(var i = 0; i<fields.length; i++){
+        var newFileField = FileField({
+          file: fileName,
+          key: fields[i][0],
+          demo: fields[i].slice(0,25),
+          data: fields[i]
+        });
+        newFileField.save(function(err, newFileField) {
+          if (err){
+            if (err.code == 11000 | err.code == 11001)
+              console.log('FileField '+newFileField.key+' already in DB, create request ignored');
+            else
+              throw err
+          }
+          else
+            console.log('FileField '+newFileField.key+ ' Saved!');
+        });
+      }
+  }
