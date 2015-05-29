@@ -39,6 +39,10 @@ angular.module('conlect', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'n
   })
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $stateProvider
+      .state('login', {
+        url: '/login',
+        templateUrl: 'app/main/login.html'
+      })
       .state('admin', {
         url: '/admin',
         templateUrl: 'app/main/admin.html'

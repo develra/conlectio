@@ -1,0 +1,12 @@
+div.jumbotron.vertical-center
+  div.container
+    div.row
+      div.col-md-offset-4.col-md-4
+        form.class.form-signin(roll="form")
+          h2.form-signing-heading Please sign in
+        input.form-control(placeholder="Username", required, autofocus)
+        input.form-control(placeholder="Password", required, type="password")
+        label.checkbox#remembermelabel Remember Me
+          input#remembermebox(value="remember-me", type="checkbox")
+        button.btn.btn-lg.btn-primary.btn-block(type="submit") Sign in
+
