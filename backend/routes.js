@@ -1,16 +1,14 @@
 // Modules & Models
-var Nerd = require('./models/nerd');
 var FileField = require('./models/filefield');
+//var Admin = require('./models/admin');
 var multiparty = require('multiparty');
-var fs = require('fs');
 var Papa = require('babyparse');
+var fs = require('fs');
 
     module.exports = function(app) {
         // server routes ===========================================================
-        // handle things like api calls
-        // authentication routes
 
-        // sample api route
+        // GET routes
         app.get('/api/viewdata', function(req, res) {
             // use mongoose to get all our filefields
             // we are going to build up our query to avoid pulling in unneeded data
@@ -66,10 +64,13 @@ var Papa = require('babyparse');
           });
           form.parse(req);
         });
+
         // route to handle delete goes here (app.delete)
 
         // frontend routes =========================================================
-        // route to handle all angular requests
+        app.get('/login', function(req, res) {
+            res.render('/frontend/app/main/login.html')
+        });
         app.get('*', function(req, res) {
             res.sendfile('./frontend/index.html');
         });
