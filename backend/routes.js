@@ -1,12 +1,23 @@
 // Modules & Models
 var FileField = require('./models/filefield');
 //var Admin = require('./models/admin');
+var passport = require('passport');
 var multiparty = require('multiparty');
 var Papa = require('babyparse');
 var fs = require('fs');
 
     module.exports = function(app) {
         // server routes ===========================================================
+        // user authentication ====================================================
+        var auth = function(req, res, next){
+          if (!res.isAuthenticated())
+            res.send(401);
+          else
+            next();
+        };
+
+        app.get('/loggedin', function(req, res) {
+          res.send(req.isAuthenticated() ?
 
         // GET routes
         app.get('/api/viewdata', function(req, res) {

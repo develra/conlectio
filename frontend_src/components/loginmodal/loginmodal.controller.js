@@ -7,12 +7,14 @@ class LoginModalCtrl{
   };
 
   cancel(){
-    //this.scope.$dismiss;
+    console.log("cancel closed");
+    this.scope.$dismiss();
   };
 
-  submit(email, password) {
+  submit(user) {
     //UsersApi.login(email, password).then(function (user) {
-    //this.scope.$close();
+    console.log(user);
+    this.scope.$close();
   };
 }
 LoginModalCtrl.$inject = ['$scope'];

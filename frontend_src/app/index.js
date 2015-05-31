@@ -110,10 +110,10 @@ angular.module('conlect', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'n
       event.preventDefault();
       loginModal.render()
         .then(function () {
-          return $state.go(toState.name, toParams);
+          return $state.go(toState, toParams);
         })
         .catch(function () {
-          return $state.go('welcome');
+          return $state.go('home');
         });
     }
   })

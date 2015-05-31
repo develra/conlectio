@@ -12,9 +12,7 @@ class LoginModal {
 
   render() {
     var instance = this.modal.open({
-      templateUrl: 'app/main/login.html',
-      controller: 'LoginModalCtrl',
-      controllerAs: 'LoginModalCtrl'
+      templateUrl: 'app/main/login.html'
     })
     return instance.result.then(this.assignCurrentUser);
   }
