@@ -68,8 +68,6 @@ function createDbBranch() {
     if (err)
       throw err;
     else{
-
-      console.log(result)
       generateConfig(result);
     }
   });

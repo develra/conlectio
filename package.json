@@ -14,6 +14,7 @@
     "babyparse": "^0.4.3",
     "bcrypt": "^0.8.3",
     "body-parser": "~1.4.2",
+    "browserify": "^11.0.1",
     "busboy": "^0.2.9",
     "compressjs": "^1.0.2",
     "crypto-js": "^3.1.5",
