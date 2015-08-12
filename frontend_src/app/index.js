@@ -43,7 +43,7 @@ angular.module('conlect', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'n
   })
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     //Prompt a login if server returns 401 on a request
-    $httpProvider.interceptors.push(function ($timeout, $q, $injector) {
+    /*$httpProvider.interceptors.push(function ($timeout, $q, $injector) {
       var loginModal, $http, $state;
       $timeout(function () {
         loginModal = $injector.get('loginModal');
@@ -61,13 +61,13 @@ angular.module('conlect', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'n
               deferred.resolve( $http(rejection.config) );
             })
             .catch(function () {
-              $state.go('welcome');
+              $state.go('home');
               deferred.reject(rejection);
             });
         return deferred.promise;
       }
     };
-  });
+  });*/
     //Routes
     $stateProvider
       .state('login', {
@@ -106,8 +106,10 @@ angular.module('conlect', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'n
 .run(function ($rootScope, $state, loginModal) {
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
     var requireLogin = toState.data.requireLogin;
+    console.log(requireLogin);
     if (requireLogin && typeof $rootScope.currentUser === 'undefined'){
       event.preventDefault();
+      console.log('run function');
       loginModal.render()
         .then(function () {
           return $state.go(toState, toParams);

@@ -1,7 +1,7 @@
 div.container-fluid.loginmodal(ng-controller="LoginModalCtrl as l")
   form.class.form-signin(roll="form")
     h3.form-signing-heading Please sign in to an admin account
-    input#usernamefield.form-control(placeholder="Username", required, autofocus, ng-model="user.name")
+    input#usernamefield.form-control(placeholder="Username", required, autofocus, ng-model="user.username")
     input#passwordfield.form-control(placeholder="Password", required, type="password" ng-model="user.password")
     label.checkbox#remembermelabel Remember Me
       input#remembermebox(value="remember-me", type="checkbox")

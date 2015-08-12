@@ -1,5 +1,5 @@
 var prompt = require('prompt');
-var crypto = require('crypto');
+var crypto = require('crypto-js');
 var fs = require('fs');
 
 prompt.start();
@@ -60,7 +60,7 @@ function createDbBranch() {
     required: true,
     //hash password before storing it in any variable
     before: function(value) {
-      return crypto.createHash('sha256').update(value).digest('hex');
+      return crypto.SHA3(value).toString();
     }
   }
   ],
@@ -107,7 +107,7 @@ function connectDbBranch() {
     required: true,
     //hash password before storing it in any variable
     before: function(value) {
-      return crypto.createHash('sha256').update(value).digest('hex');
+      return crypto.createHash('sha3').update(value).digest('hex');
     }
   }
   ],
@@ -127,7 +127,9 @@ function generateConfig(data){
   dbObj.collection = data.collection_name
   var dbStream = fs.createWriteStream("config/db.js");
   dbStream.once('open', function(fd) {
-    dbStream.write(JSON.stringify(dbObj));
+    dbStream.write('var db = {};\n');
+    dbStream.write('db = ' + JSON.stringify(dbObj) + ';\n');
+    dbStream.write('module.exports = db;\n');
     dbStream.end();
   });
   //write to the admin config file
@@ -136,7 +138,9 @@ function generateConfig(data){
   adminObj.password = data.adminPassword;
   var adminStream = fs.createWriteStream("config/adminCreds.js");
   adminStream.once('open', function(fd) {
-    adminStream.write(JSON.stringify(adminObj));
+    adminStream.write('var admin = {};\n');
+    adminStream.write('admin = ' + JSON.stringify(adminObj) + ';\n');
+    adminStream.write('module.exports = admin;\n');
     adminStream.end();
   });
 }

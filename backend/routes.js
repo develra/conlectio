@@ -16,8 +16,9 @@ var fs = require('fs');
             next();
         };
 
-        app.get('/loggedin', function(req, res) {
-          res.send(req.isAuthenticated() ?
+        // app.get('/loggedin', function(req, res) {
+        //    res.send(req.isAuthenticated() ?
+        //  });
 
         // GET routes
         app.get('/api/viewdata', function(req, res) {
@@ -53,6 +54,12 @@ var fs = require('fs');
         });
 
         // route to handle creating goes here (app.post)
+        app.post('/api/login',
+                 passport.authenticate('local', {session: false}),
+                 function(req, res) {
+                   res.send(req.user);
+        });
+
         app.post('/admin/upload', function(req, res) {
           var form = new multiparty.Form()
           form.on('error', function(err) {
@@ -79,9 +86,9 @@ var fs = require('fs');
         // route to handle delete goes here (app.delete)
 
         // frontend routes =========================================================
-        app.get('/login', function(req, res) {
-            res.render('/frontend/app/main/login.html')
-        });
+        //app.get('/login', function(req, res) {
+        //    res.render('/frontend/app/main/login.html')
+        //});
         app.get('*', function(req, res) {
             res.sendfile('./frontend/index.html');
         });
