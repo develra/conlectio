@@ -84,6 +84,15 @@ var fs = require('fs');
         });
 
         // route to handle delete goes here (app.delete)
+        app.delete('/admin/delete/:field', function(req, res) {
+          FileField.remove({_id: req.params.field}, function(err){
+            if (!err) {
+              res.send(req.params.field);
+            }
+            else
+              res.send('could not remove ' + req.params.field);
+          });
+        });
 
         // frontend routes =========================================================
         //app.get('/login', function(req, res) {
@@ -99,8 +108,6 @@ function parseCSV(csvFile, fileName){
     //fileName is optional
     if(typeof fileName === "undefined")
       fileName = csvFile.name;
-    //After days of work, abandon it all and use papa parse instead
-    //The more you know!
     var parsedCsv = Papa.parse(csvFile,{
       config: {
         skipEmptyLines: true
@@ -116,12 +123,14 @@ function parseCSV(csvFile, fileName){
       for(var j = 0; j<fieldsSize; j++)
         fields[j][i] = parsedCsv.data[i][j];
       //finally, lets push our fields to mongodb
+      console.log(fields.length);
       for(var i = 0; i<fields.length; i++){
+        console.log(i);
         var newFileField = FileField({
           file: fileName,
           key: fields[i][0],
           demo: fields[i].slice(0,25),
-          data: fields[i]
+          data: fields[i].slice(0,100000)
         });
         //delete the _id field to make mongodb happy
         var tempFileField = newFileField.toObject()

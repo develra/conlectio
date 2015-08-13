@@ -2,6 +2,13 @@
 {
     padding-left: 3px;
     padding-right: 3px;
+    height: calc(100vh - 55px);
+    overflow: auto;
+}
+
+.preview-table
+{
+  overflow: auto;
 }
 
 .lr-drop-target-before{

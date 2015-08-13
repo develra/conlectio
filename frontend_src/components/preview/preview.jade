@@ -1,5 +1,5 @@
 div.col-sm-9.col-md-10.preview(ng-controller="PreviewCtrl as p")
-  table.table.table-bordered.table-striped(st-table="p.fileList")
+  table.table.table-bordered.table-striped.preview-table(st-table="p.fileList")
     thead
       tr
         th(lr-drag-src="headers" lr-drop-target="headers" ng-if="field.active" ng-repeat="field in p.fileList") {{field.key}}
@@ -7,3 +7,4 @@ div.col-sm-9.col-md-10.preview(ng-controller="PreviewCtrl as p")
       tr(ng-repeat="i in p.fileList[0].demo track by $index"
          ng-init="dataIndex = $index")
         td(ng-repeat="field in p.fileList track by $index" ng-if="field.active") {{field.demo[dataIndex]}}
+    tfoot

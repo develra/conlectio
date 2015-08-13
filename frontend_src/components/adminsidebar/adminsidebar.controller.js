@@ -1,10 +1,11 @@
 'use strict';
 class AdminSidebarCtrl {
 
-  constructor(Shared_Data, Upload) {
+  constructor(Shared_Data, Upload, $http) {
     this.filesIn = [];
     this.fileList = Shared_Data;
-    this.Upload = Upload
+    this.Upload = Upload;
+    this.http = $http;
   };
 
   handleFiles(files) {
@@ -64,7 +65,19 @@ class AdminSidebarCtrl {
   toggle(field){
     field.active = !field.active;
   }
+
+  remove(field){
+    console.log('remove called with', field);
+    this.http.delete('/admin/delete/' + field._id).then(function(response){
+      console.log(response);
+      for(var i in this.fileList){
+        if(this.fileList[i]._id === response.data){
+            this.fileList.splice(i, 1);
+        }
+      }
+    }.bind(this));
+  }
 };
 
-AdminSidebarCtrl.$inject = ['Shared_Data', 'Upload'];
+AdminSidebarCtrl.$inject = ['Shared_Data', 'Upload', '$http'];
 export default AdminSidebarCtrl;
