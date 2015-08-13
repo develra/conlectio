@@ -1,6 +1,6 @@
 {
   "name": "conlectio",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Fast, Browser-based ODF parsing",
   "repository": {
     "type": "git",
