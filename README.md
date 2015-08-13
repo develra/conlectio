@@ -2,7 +2,7 @@
 A simple to implement, simple to use data sharing tool.
 
 ### Dependencies
-Node, Npm, Mongodb
+Node, Npm, Mongodb, Gulp, Bower
 
 ### Installation and Setup
   ```
@@ -22,7 +22,8 @@ Node, Npm, Mongodb
   ```
   navigate to localhost:8080
   * To add/remove/update files
-    *navigate to localhost:8080/admin
-    *login
+  * navigate to localhost:8080/admin
+  * login
+
 ### License
   Licensed under the MIT License
