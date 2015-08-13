@@ -3,10 +3,10 @@ class SidebarCtrl {
 
   constructor(Shared_Data) {
     this.fileList = Shared_Data;
-    console.log(this.fileList);
   };
 
   toggle(field){
+    console.log(this.fileList);
     field.active = !field.active;
   }
 };

@@ -8,7 +8,7 @@ import AdminNavbarCtrl from '../components/adminnavbar/adminnavbar.controller';
 import LoginModalCtrl from '../components/loginmodal/loginmodal.controller';
 import LoginModal from '../components/loginmodal/loginmodal.service';
 
-angular.module('conlect', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ui.bootstrap', 'ngFileUpload', 'lrDragNDrop', 'smart-table'])
+angular.module('conlect', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ui.bootstrap', 'ngFileUpload', 'lrDragNDrop', 'smart-table', '720kb.tooltips'])
   .factory('Shared_Data', function ($http) {
     var sharedObj = [];
     $http.get('/api/viewdata')

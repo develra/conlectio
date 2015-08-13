@@ -5,7 +5,8 @@ var filefieldSchema = new Schema({
   file: String,
   key: String,
   demo: Array,
-  data: Array
+  data: Array,
+  fieldLength: Number
 });
 
 var FileField = mongoose.model('FileField', filefieldSchema);

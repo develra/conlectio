@@ -6,6 +6,6 @@ div.col-sm-3.col-md-2.navbar-default.sidebar(ng-controller="SidebarCtrl as s")
           span.glyphicon.glyphicon-minus
         div.show-field(ng-click="s.toggle(field)" ng-hide="field.active")
           span.glyphicon.glyphicon-plus
-        div.field-info()
+        div.field-info(tooltips tooltip-title="file: {{field.file}}" tooltip-content="total fields: {{field.fieldLength}}" tooltip-side="right")
           span.glyphicon.glyphicon-info-sign
 

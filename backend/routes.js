@@ -1,10 +1,10 @@
 // Modules & Models
 var FileField = require('./models/filefield');
-//var Admin = require('./models/admin');
 var passport = require('passport');
 var multiparty = require('multiparty');
 var Papa = require('babyparse');
 var fs = require('fs');
+var lzma = require('lzma');
 
     module.exports = function(app) {
         // server routes ===========================================================
@@ -16,17 +16,13 @@ var fs = require('fs');
             next();
         };
 
-        // app.get('/loggedin', function(req, res) {
-        //    res.send(req.isAuthenticated() ?
-        //  });
-
         // GET routes
         app.get('/api/viewdata', function(req, res) {
             // use mongoose to get all our filefields
             // we are going to build up our query to avoid pulling in unneeded data
             var query = FileField.find({})
             //select only the needed fields
-            query.select('file key demo');
+            query.select('file key demo fieldLength');
             query.exec(function (err, data){
                 if (err)
                     res.send(err);
@@ -49,9 +45,13 @@ var fs = require('fs');
           query.exec(function (err, data){
             if (err)
               res.send(err)
-            res.send(data);
-          });
+            data = JSON.stringify(data);
+            lzma.compress(data, 1, function on_finish(result) {
+              res.send(result);
+            }, function on_progress(percent){
+            });
         });
+    });
 
         // route to handle creating goes here (app.post)
         app.post('/api/login',
@@ -123,14 +123,14 @@ function parseCSV(csvFile, fileName){
       for(var j = 0; j<fieldsSize; j++)
         fields[j][i] = parsedCsv.data[i][j];
       //finally, lets push our fields to mongodb
-      console.log(fields.length);
       for(var i = 0; i<fields.length; i++){
-        console.log(i);
+        //the slice is temporary until fsGrid gets fixed
         var newFileField = FileField({
           file: fileName,
           key: fields[i][0],
           demo: fields[i].slice(0,25),
-          data: fields[i].slice(0,100000)
+          data: fields[i].slice(0,100000),
+          fieldLength: fields[i].length
         });
         //delete the _id field to make mongodb happy
         var tempFileField = newFileField.toObject()
@@ -155,6 +155,6 @@ function parseCSV(csvFile, fileName){
             else
               console.log(numberAffected + ' FileField Created');
           }
-        });
+        }.bind(this));
       }
   }

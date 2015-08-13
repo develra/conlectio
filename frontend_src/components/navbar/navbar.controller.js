@@ -1,4 +1,5 @@
 'use strict';
+import LZMA_decompress from './lzma_d.js'
 
 class NavbarCtrl {
   constructor(Shared_Data, $http) {
@@ -24,7 +25,10 @@ class NavbarCtrl {
     var that = this;
     this.http.get('/api/realdata', {params: activeFields})
      .success(function(data){
-       that.buildCsvDocument(data);
+       LZMA_decompress.decompress(data, function(decompressed_data){
+         decompressed_data = JSON.parse(decompressed_data);
+         that.buildCsvDocument(decompressed_data);
+       });
      })
      .error(function(data,status){
        console.log(data + ' failed with status ' + status);
